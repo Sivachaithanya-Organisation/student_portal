@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block content %}
+<div class="row"><h1>Results &ndash; previous semester</h1><div class="card" style="padding:8px 16px"><span class="muted">GPA</span> <b style="font-size:20px">{{ gpa }}</b></div></div>
+<div class="card"><table><tr><th>Code</th><th>Subject</th><th>Credits</th><th>Internal /40</th><th>External /60</th><th>Total</th><th>Grade</th><th>Attendance</th></tr>
+{% for r in rows %}<tr><td>{{ r.code }}</td><td>{{ r.subject }}</td><td>{{ r.credits }}</td><td>{{ r.internal }}</td><td>{{ r.external }}</td><td>{{ r.total }}</td><td><span class="tag">{{ r.grade }}</span></td><td>{{ r.attendance }}%</td></tr>{% endfor %}</table></div>{% endblock %}

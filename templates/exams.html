@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block content %}<h1>Exam schedule</h1>
+<div class="card"><table><tr><th>Date</th><th>Code</th><th>Subject</th><th>Time</th><th>Duration</th><th>Room</th><th>Days left</th></tr>
+{% for e in exams %}<tr><td>{{ e.date.strftime('%a, %d %b %Y') }}</td><td>{{ e.code }}</td><td>{{ e.subject }}</td><td>{{ e.time }}</td><td>{{ e.duration }}</td><td>{{ e.room }}</td><td>{{ (e.date - today).days }}</td></tr>
+{% else %}<tr><td colspan="7">No upcoming exams.</td></tr>{% endfor %}</table></div>{% endblock %}

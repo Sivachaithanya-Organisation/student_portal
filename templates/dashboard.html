@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block content %}
+<h1>Welcome, {{ user.name }}</h1><p class="muted">{{ user.program }} &middot; Semester {{ user.semester }} &middot; {{ user.roll }}</p>
+<div class="grid" style="margin-bottom:16px">
+<div class="card"><div class="muted">Last semester GPA</div><div class="stat">{{ gpa }}</div></div>
+<div class="card"><div class="muted">Upcoming exams</div><div class="stat">{{ exam_count }}</div></div></div>
+<div class="grid">
+<div class="card"><h2>Next exams</h2>{% for e in exams %}<div class="row"><span>{{ e.subject }}</span><span class="muted">{{ e.date.strftime('%d %b') }}, {{ e.time }}</span></div>{% endfor %}</div>
+<div class="card"><h2>Coming up</h2>{% for e in events %}<div class="row"><span>{{ e.title }}</span><span class="muted">{{ e.date.strftime('%d %b') }}</span></div>{% endfor %}</div>
+<div class="card"><h2>Top suggestions</h2>{% for t in tips %}<div class="tip {{ t.level }}"><b>{{ t.title }}</b><span class="muted">{{ t.body }}</span></div>{% endfor %}<a href="{{ url_for('suggestions') }}">All suggestions &rarr;</a></div>
+</div>{% endblock %}

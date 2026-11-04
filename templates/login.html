@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}
+<div class="login card"><h1>Student Portal</h1>
+{% for m in get_flashed_messages() %}<p class="err">{{ m }}</p>{% endfor %}
+<form method="post"><label>Username</label><input name="username" autocomplete="username"><label>Password</label><input name="password" type="password" autocomplete="current-password">
+<button class="btn" style="width:100%">Sign in</button></form>
+<form method="post" style="margin-top:10px"><input type="hidden" name="guest" value="1"><button class="btn ghost" style="width:100%">Continue as guest</button></form>
+<p class="muted">Demo login: guest / guest</p></div>{% endblock %}

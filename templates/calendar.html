@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block content %}
+<div class="row"><h1>{{ month_name }} {{ y }}</h1><div><a class="btn ghost" href="?y={{ prev[0] }}&m={{ prev[1] }}">&larr;</a> <a class="btn ghost" href="{{ url_for('calendar_view') }}">Today</a> <a class="btn ghost" href="?y={{ nxt[0] }}&m={{ nxt[1] }}">&rarr;</a></div></div>
+<div class="card"><table class="cal"><tr>{% for n in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'] %}<th>{{ n }}</th>{% endfor %}</tr>
+{% for wk in weeks %}<tr>{% for day in wk %}<td class="{{ 'today' if day == today }}">{% if day %}<div class="num">{{ day.day }}</div>
+{% for it in items.get(day, []) %}<span class="pill {{ it.type }}" title="{{ it.title }}">{{ it.title }}</span>{% endfor %}{% endif %}</td>{% endfor %}</tr>{% endfor %}</table></div>{% endblock %}

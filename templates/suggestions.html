@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block content %}<h1>Suggestions for you</h1>
+{% for t in tips %}<div class="tip {{ t.level }}"><b>{{ t.title }}</b><span class="muted">{{ t.body }}</span></div>{% endfor %}{% endblock %}

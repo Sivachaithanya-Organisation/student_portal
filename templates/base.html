@@ -1,0 +1,10 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}Student Portal{% endblock %}</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head><body>
+{% if user %}<nav><span class="brand">&#127891; Student Portal</span>
+<a href="{{ url_for('dashboard') }}" class="{{ 'on' if request.endpoint=='dashboard' }}">Dashboard</a>
+<a href="{{ url_for('exams') }}" class="{{ 'on' if request.endpoint=='exams' }}">Exam schedule</a>
+<a href="{{ url_for('results') }}" class="{{ 'on' if request.endpoint=='results' }}">Results</a>
+<a href="{{ url_for('calendar_view') }}" class="{{ 'on' if request.endpoint=='calendar_view' }}">Calendar</a>
+<a href="{{ url_for('suggestions') }}" class="{{ 'on' if request.endpoint=='suggestions' }}">Suggestions</a>
+<span class="sp"></span><span class="muted">{{ user.name }}</span><a href="{{ url_for('logout') }}">Sign out</a></nav>{% endif %}
+<main>{% block content %}{% endblock %}</main></body></html>
