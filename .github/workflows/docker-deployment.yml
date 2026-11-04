@@ -1,0 +1,63 @@
+name: Docker sample deployment with github action extensions ===> plugins
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  IMAGE_REPOSITORY: 517293881035.dkr.ecr.us-west-2.amazonaws.com
+
+jobs:
+  
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v6
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Login to Amazon ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+            
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ steps.ecr.outputs.registry }}/siva-dockerproject:${{ github.sha }}
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Execute remote SSH commands using password
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.IPADDRESS }}
+          username: ubuntu
+          port: 22
+          key: ${{ secrets.KEY }}
+          script: |
+            aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${{ env.IMAGE_REPOSITORY }}
+            docker push ${{ env.IMAGE_REPOSITORY }}/siva-dockerproject:${{ github.sha }}
+            docker rm -f student-portal
+            docker run -itd -p 8000:8000 --name student-portal ${{ env.IMAGE_REPOSITORY }}/siva-dockerproject:${{ github.sha }}
+
+
+
+    
