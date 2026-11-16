@@ -10,7 +10,7 @@ env:
   ECS_SERVICE: studentportal-app           # set this to your Amazon ECS service name
   ECS_CLUSTER: siva-cluster                # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: studentportal.json  # set this to the path to your Amazon ECS task definition
-  CONTAINER_NAME: studentportal
+  CONTAINER_NAME: siva-studentportal
 
 jobs:
   
@@ -36,6 +36,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          provenance: false 
           tags: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
   
       - name: Fill in the new image ID in the Amazon ECS task definition
@@ -44,7 +45,7 @@ jobs:
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.build-image.outputs.image }}
+          image: image: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
